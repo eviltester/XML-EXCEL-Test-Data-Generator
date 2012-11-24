@@ -1,11 +1,4 @@
-XML-EXCEL-Test-Data-Generator
-=============================
-
-Prior to writing https://github.com/eviltester/XML-VB-Test-Data-Generator I wrote a Prototype for the XML driven Test Data Generator in EXCEL
-
-This was back in 2004 - 2005 so I don't remember much about it now.
-
-```
+<?xml version="1.0"?> 
 <!-- DataDefinitions
 	contains Sets and Rules
 
@@ -86,5 +79,49 @@ This was back in 2004 - 2005 so I don't remember much about it now.
 		'to' the maximum number of times to repeat
 			if no to is provided then the default is used.
  --> 
-```
 
+<DataDefinitions>
+	<Sets>
+		<Set name = "MFM User Role">
+			<Element>Property Fund Manager</Element>
+			<Element>Property Fund User</Element>			
+		</Set>
+		<Set name = "JMP User Role">
+			<Element>JMP Fund Manager</Element>
+			<Element>JMP Fund User</Element>			
+		</Set>
+	</Sets>
+	<Rules>
+		<Rule name ="userRole">
+			<SetOperation type="Union">
+			 	<OperatesOn>MFM User Role</OperatesOn>
+				<OperatesOn>JMP User Role</OperatesOn>			 
+			</SetOperation>
+		</Rule>
+		<Rule name = "padAccHeader">
+			<Range type="int" width="5" padded="left" paddedWith="0" from="0" to="99999"/>
+		</Rule>
+		<Rule name = "accountNumber">
+			<Term name="padAccHeader"/>
+			<Optional>
+				<Repeat from="3" to ="20">
+					<Range type="char" from="A" to = "Z"/>
+				</Repeat>
+			</Optional>
+			<Term name="MFM User Role"/>
+			<Range type="date" from="12/04/69" to="29/04/69" format="dddddd ttttt" />
+			<Choice>
+				<Option weighting="2">
+					<Repeat from="3" to ="20">
+						<Term>X</Term>
+					</Repeat>
+				</Option>
+				<Option weighting ="1">
+					<Repeat from="3" to ="20">
+						<Term>Y</Term>
+					</Repeat>
+				</Option>
+			</Choice>
+		</Rule>
+	</Rules>
+</DataDefinitions>
